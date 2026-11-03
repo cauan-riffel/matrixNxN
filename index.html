@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Matriz NxN</title>
+  </head>
+  <body>
+    <div id="root">
+      <div id="controles">
+        <div id="controle-quantidade-itens">
+          <label for="input-range-qnt-colunas">Colunas</label>
+          <input
+            value="0"
+            step="1"
+            id="input-range-qnt-colunas"
+            oninput="
+              tabela.setSize(this.valueAsNumber);
+              cellIndicator.textContent = this.value;
+              updateTable();
+            "
+            type="range"
+            min="0"
+            max="25"
+          />
+          <p id="qnt-cells">0</p>
+        </div>
+        <div id="controle-itens">
+          <div>
+            <label for="input-number-controle-itens">Item</label>
+            <input id="input-number-controle-itens" type="number" />
+            <input
+              type="button"
+              value="+"
+              aria-label="Adicionar item"
+              onclick="
+                const val = tabela.preencher.addValue(inputItem.valueAsNumber);
+                if (val) {
+                  return (erroItem.textContent = val.message);
+                } else {
+                  erroItem.textContent = '';
+                  inputItem.value = '';
+                }
+                updateTable();
+              "
+            />
+            <input
+              type="button"
+              value="Calcular"
+              aria-label="Calcular determiante"
+            />
+          </div>
+          <p class="erro" id="itens-erro"></p>
+        </div>
+      </div>
+      <div id="block">
+        <canvas id="desenho"></canvas>
+        <div id="dados"></div>
+      </div>
+    </div>
+
+    <script src="classes/blocks.js"></script>
+    <script src="aux.js"></script>
+    <script src="consts.js"></script>
+    <script src="classes/tabela.js"></script>
+    <script src="classes/canvas.js"></script>
+    <script src="classes/iterator.js"></script>
+    <script src="factories/createItem.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
