@@ -12,6 +12,10 @@ class Preenchimento {
     this._podePreencher = this._tabela._qntCells !== 0;
   }
 
+  tabelaCopleta() {
+    return this._podePreencher === false;
+  }
+
   addValue(value) {
     if (!Number.isFinite(+value)) {
       return new Error(`Valor ${value} informado não é um número!`);
@@ -27,7 +31,7 @@ class Preenchimento {
 }
 
 class Tabela {
-  static DEFAULT_SIZE = 5;
+  static DEFAULT_SIZE = 1;
 
   constructor() {
     /** @type {Preenchimento} */
@@ -42,6 +46,11 @@ class Tabela {
         this.slices.push(item);
       }
     }
+  }
+  appendSliceBase() {
+    this.slices.push(
+      new TabelaSlice(0, 0, this.side, 0, new Color(0, 0, 50))
+    )
   }
 
   setSize(

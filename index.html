@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="src/style.css" />
     <title>Matriz NxN</title>
   </head>
   <body>
@@ -12,61 +12,119 @@
         <div id="controle-quantidade-itens">
           <label for="input-range-qnt-colunas">Colunas</label>
           <input
-            value="0"
             step="1"
             id="input-range-qnt-colunas"
-            oninput="
-              tabela.setSize(this.valueAsNumber);
-              cellIndicator.textContent = this.value;
-              updateTable();
-            "
+            oninput="handleRangeChange(event)"
             type="range"
             min="0"
-            max="25"
+            max="20"
           />
           <p id="qnt-cells">0</p>
         </div>
         <div id="controle-itens">
           <div>
             <label for="input-number-controle-itens">Item</label>
-            <input id="input-number-controle-itens" type="number" />
             <input
-              type="button"
-              value="+"
-              aria-label="Adicionar item"
-              onclick="
-                const val = tabela.preencher.addValue(inputItem.valueAsNumber);
-                if (val) {
-                  return (erroItem.textContent = val.message);
-                } else {
-                  erroItem.textContent = '';
-                  inputItem.value = '';
+              id="input-number-controle-itens"
+              type="number"
+              onkeydown="
+                if(event.key === 'Enter'){
+                  event.stopPropagation();
+                  BTN_ADD_ITEM.click()
                 }
-                updateTable();
               "
             />
             <input
               type="button"
+              value="Aleatório"
+              aria-label="Adicionar item"
+              onclick="handleRandomTable()"
+            />
+            <input
+              id="btn-add-item"
+              type="button"
+              value="+"
+              aria-label="Adicionar item"
+              onclick="handleAddItem()"
+            />
+            <input
+              id="btn-calcular"
+              type="button"
               value="Calcular"
+              style="display: none;"
               aria-label="Calcular determiante"
+              onclick="handleCalcular()"
             />
           </div>
           <p class="erro" id="itens-erro"></p>
         </div>
+        <details id="configuracoes">
+          <summary>Configurações</summary>
+
+          <div class="config-linha">
+            <label for="chk-linha-inteira">
+              <input id="chk-linha-inteira" type="checkbox" />
+              Varrer a linha inteira por passo
+            </label>
+          </div>
+
+          <div class="config-linha">
+            <label for="input-direto-ate">Calcular direto até o lado</label>
+            <input id="input-direto-ate" type="number" min="2" step="1" value="2" />
+          </div>
+
+          <p class="config-ajuda">
+            Submatrizes com lado menor ou igual a esse valor viram um único passo.
+            Em matrizes grandes, valores maiores reduzem muito o número de submatrizes.
+          </p>
+        </details>
       </div>
       <div id="block">
         <canvas id="desenho"></canvas>
-        <div id="dados"></div>
+        <div id="coluna-dados">
+          <div class="coluna-conteudo">
+            <div id="dados"></div>
+            <div id="stepper" hidden>
+              <input id="btn-step-prev" type="button" value="‹" aria-label="Passo anterior" onclick="executeIterator(true)" />
+              <span id="step-indicador" aria-live="polite">0 / 0</span>
+              <input id="btn-step-next" type="button" value="›" aria-label="Próximo passo" onclick="executeIterator()" />
+              <input id="btn-step-last" type="button" value="››" aria-label="Ir para o último passo" onclick="executeIterator(false, true)" />
+
+              <div class="stepper-linha">
+                <input id="btn-auto-prev" class="btn-texto" type="button" value="◂ Auto" aria-label="Voltar automaticamente" onclick="stepper.startAuto(-1)" />
+                <input id="btn-step-reset" type="button" value="Reiniciar" aria-label="Reiniciar e voltar ao preenchimento" onclick="handleReiniciar()" />
+                <input id="btn-auto-next" class="btn-texto" type="button" value="Auto ▸" aria-label="Avançar automaticamente" onclick="stepper.startAuto(1)" />
+              </div>
+
+             <div class="stepper-linha stepper-opcoes">
+                <label>
+                  Intervalo
+                  <input id="input-step-intervalo" type="number" min="10" step="50" value="300" />
+                  ms
+                </label>
+                <label>
+                  <input id="chk-mostrar-total" type="checkbox" onchange="stepper.render()" />
+                  Mostrar total
+                </label>
+              </div>
+
+              <p id="step-descricao" aria-live="polite"></p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <script src="classes/blocks.js"></script>
-    <script src="aux.js"></script>
-    <script src="consts.js"></script>
-    <script src="classes/tabela.js"></script>
-    <script src="classes/canvas.js"></script>
-    <script src="classes/iterator.js"></script>
-    <script src="factories/createItem.js"></script>
-    <script src="main.js"></script>
+    <script src="src/classes/blocks.js"></script>
+    <script src="src/aux.js"></script>
+    <script src="src/consts.js"></script>
+    <script src="src/classes/tabela.js"></script>
+    <script src="src/classes/canvas.js"></script>
+    <script src="src/classes/iterator.js"></script>
+    <script src="src/classes/timeline.js"></script>
+    <script src="src/factories/createItem.js"></script>
+    <script src="src/main.js"></script>
+
+    <script src="src/handlers.js"></script>
   </body>
 </html>
