@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "html-minifier-terser": "^7.2.0"
+  },
+  "scripts": {
+    "build": "esbuild src/*.js   --bundle   --minify   --outdir=dist/src && esbuild src/style.css --bundle --minify --outfile=dist/src/style.css && node scripts/minify-html.js"
+  }
+}

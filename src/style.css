@@ -76,6 +76,7 @@ body {
 
 #controle-itens {
   flex: 1 1 320px;
+  overflow-y: hidden;
 }
 
 label {
@@ -195,12 +196,21 @@ p.erro:empty {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   margin: 8px 10px;
 }
 
-.layer-item > .layer-item-headder > p {
-  margin: 0 auto 0 0;
+.layer-item > .layer-item-headder p {
+  margin: 0;
+}
+
+.layer-item > .layer-item-headder > div > p:first-child {
   font-weight: 600;
+}
+
+.layer-item-status {
+  font-size: 0.85em;
+  color: var(--ink-soft);
 }
 
 .layer-item > .layer-item-headder > .layer-item-color {
@@ -215,6 +225,26 @@ p.erro:empty {
   padding: 0 10px 10px 30px;
   color: var(--ink-soft);
   font-variant-numeric: tabular-nums;
+}
+
+/* X, Y e Tamanho na mesma linha */
+.layer-item > ul.layer-item-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  list-style: none;
+  padding-left: 10px;
+}
+
+.layer-item > .layer-item-divider {
+  width: calc(100% - 20px);
+  margin: 0 10px 8px;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+.layer-item > ul.layer-item-state:empty {
+  display: none;
 }
 
 /* ---------- Responsivo ---------- */
@@ -233,4 +263,160 @@ p.erro:empty {
   #dados {
     max-height: none;
   }
+
+  #block > #desenho,
+  #coluna-dados {
+    width: 100%;
+    flex-basis: auto;
+  }
+}
+
+/* ---------- Coluna de dados + stepper ---------- */
+
+#coluna-dados {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 320px;
+  align-self: stretch; /* mesma altura do canvas */
+}
+
+/* absoluto: não influencia a altura, que vem do canvas */
+.coluna-conteudo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#coluna-dados #dados {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  overflow-y: auto;
+}
+
+#stepper {
+  flex: none; /* fica na base, fora da rolagem */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 12px;
+  padding: 10px 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+#stepper[hidden] {
+  display: none;
+}
+
+#step-indicador {
+  min-width: 7ch;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+#step-descricao {
+  flex: 0 0 100%;
+  margin: 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+#stepper input[type="button"]:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: none;
+}
+
+.layer-item-ativa {
+  border-color: var(--accent);
+}
+
+.layer-item-dets {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  vertical-align: middle;
+}
+
+.layer-item-det {
+  padding: 0 8px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 999px;
+}
+
+#btn-step-reset {
+  padding: 0 14px;
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--line);
+}
+
+.stepper-linha {
+  flex: 0 0 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+#stepper .btn-texto {
+  padding: 0 14px;
+  font-size: 0.95rem;
+}
+
+.stepper-opcoes label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.stepper-opcoes input[type="number"] {
+  width: 80px;
+}
+
+#configuracoes {
+  flex: 1 1 100%;
+}
+
+#configuracoes summary {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.config-linha {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.config-linha label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+input[type="checkbox"] {
+  accent-color: var(--accent);
+}
+
+.config-ajuda {
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
 }
